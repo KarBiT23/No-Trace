@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
 
-        // 🔥 Oyuna girer girmez aim animasyonunu başlat
+        // 🔥 Oyuna girer girmez aim animasyonunu başlate
         if (animator != null)
             animator.SetBool("isAiming", true);
     }
