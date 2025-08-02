@@ -1,16 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 3f;
-    public Animator animator;
     public Transform cameraTransform;
+    public Animator animator;
 
     private CharacterController controller;
     private Vector3 moveDirection;
-
-    private bool isShooting = false;
 
     void Start()
     {
@@ -18,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
+
+        // ðŸ”¥ Oyuna girer girmez aim animasyonunu baÅŸlat
+        if (animator != null)
+            animator.SetBool("isAiming", true);
     }
 
     void Update()
@@ -35,47 +37,11 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = (forward * vertical + right * horizontal).normalized;
 
-        // Hareket hýzý her zaman sabit
-        float currentSpeed = moveSpeed;
-
         if (move.magnitude >= 0.1f)
         {
-            moveDirection = move * currentSpeed;
+            moveDirection = move * moveSpeed;
             controller.Move(moveDirection * Time.deltaTime);
-
-            // Yönü deðiþtir
             transform.forward = move;
         }
-
-        // Animator'a hareket verisi gönder
-        animator.SetFloat("Speed", move.magnitude);
-
-        // Ateþ etme kontrolü
-        if (Input.GetMouseButtonDown(0))
-        {
-            isShooting = true;
-            animator.SetBool("IsShooting", isShooting);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            isShooting = false;
-            animator.SetBool("IsShooting", isShooting);
-        }
-
-        // Eðer koþarken ateþ etme animasyonu ayrý bir animasyon ise ve Animator'da 'ShootWhileRunning' adýnda özel bir animasyon varsa:
-        
-        if (isShooting && move.magnitude > 0.1f)
-        {
-            animator.Play("ShootWhileRunning");
-        }
-        
-    }
-
-    // Animator Event ile çaðrýlýr (animasyon bitince otomatik olarak durdurmak için)
-    public void OnShootAnimationEnd()
-    {
-        isShooting = false;
-        animator.SetBool("IsShooting", isShooting);
     }
 }
