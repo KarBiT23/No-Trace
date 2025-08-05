@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class FirstPersonLook : MonoBehaviour
 {
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 100f; // Fare hassasiyeti
     public Transform playerBody;
-    float xRotation = 22.45f;  // Baþlangýçta sabit açýyý veriyoruz
+    public float smoothTime = 0.05f; // Yumuþatma süresi
+
+    float xRotation = 0f;
+    float currentMouseX, currentMouseY;
+    float mouseXVelocity, mouseYVelocity;
 
     void Start()
     {
@@ -13,12 +17,21 @@ public class FirstPersonLook : MonoBehaviour
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // Fare inputlarýný al
+        float targetMouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float targetMouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        
+        // Yumuþatma (SmoothDamp)
+        currentMouseX = Mathf.SmoothDamp(currentMouseX, targetMouseX, ref mouseXVelocity, smoothTime);
+        currentMouseY = Mathf.SmoothDamp(currentMouseY, targetMouseY, ref mouseYVelocity, smoothTime);
+
+        // Yukarý-aþaðý bakýþ (X ekseni)
+        xRotation -= currentMouseY;
+        xRotation = Mathf.Clamp(xRotation, -85f, 85f); // Ýnsan boynu gibi sýnýr
 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+
+        // Saða-sola dönme (Y ekseni)
+        playerBody.Rotate(Vector3.up * currentMouseX);
     }
 }
