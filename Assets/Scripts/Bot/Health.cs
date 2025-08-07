@@ -4,7 +4,7 @@ public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     public bool isDead { get; private set; }
-    public float despawnTime = 8f; // Ölünce kaç saniye sonra yok olacak
+    public float despawnTime = 8f;
 
     private int currentHealth;
     private Rigidbody rb;
@@ -33,28 +33,19 @@ public class Health : MonoBehaviour
         isDead = true;
         gameObject.tag = "Dead";
 
-        // Eðer animasyon varsa ölme animasyonu
         if (anim != null)
         {
             anim.SetTrigger("Die");
         }
-        else
+
+        // Rigidbody ile fizik etkileþimi açýlabilir (isteðe göre)
+        if (rb != null)
         {
-            // Animasyon yoksa fizik ile yere düþür
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-                rb.useGravity = true;
-            }
+            rb.isKinematic = false;
+            rb.useGravity = true;
         }
 
-        // AI hareketini kapat
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent != null) agent.enabled = false;
-
-        Debug.Log(name + " öldü ve Dead tag'i aldý!");
-
-        // Yok olma zamanlayýcýsý
+        // Despawn süresi sonra objeyi yok et
         Invoke(nameof(Despawn), despawnTime);
     }
 

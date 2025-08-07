@@ -17,9 +17,8 @@ public class PlayerMovement : MonoBehaviour
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
 
-        // 🔥 Oyuna girer girmez aim animasyonunu başlate
         if (animator != null)
-            animator.SetBool("isAiming", true);
+            animator.SetBool("isAiming", true); // Oyuna girerken aim animasyonu
     }
 
     void Update()
@@ -27,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+        // Kamera yönlerini al
         Vector3 forward = cameraTransform.forward;
         forward.y = 0f;
         forward.Normalize();
@@ -35,13 +35,22 @@ public class PlayerMovement : MonoBehaviour
         right.y = 0f;
         right.Normalize();
 
+        // Hareket yönü
         Vector3 move = (forward * vertical + right * horizontal).normalized;
 
+        // Hareket varsa uygula
         if (move.magnitude >= 0.1f)
         {
             moveDirection = move * moveSpeed;
             controller.Move(moveDirection * Time.deltaTime);
-            transform.forward = move;
+
+            if (animator != null)
+                animator.SetFloat("Speed", move.magnitude);
+        }
+        else
+        {
+            if (animator != null)
+                animator.SetFloat("Speed", 0f);
         }
     }
 }
