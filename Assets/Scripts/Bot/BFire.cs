@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fire : MonoBehaviour
+public class BFire : MonoBehaviour
 {
     RaycastHit hit;
     public GameObject MermiCikisNoktasi;
@@ -26,7 +26,7 @@ public class Fire : MonoBehaviour
         {
             Shoot(); // 🔄 Metot adını değiştirdik
             GunTimer = Time.time + TaramaHizi;
-            recoil.Fire();
+            //recoil.Fire();
         }
     }
 
@@ -34,23 +34,24 @@ public class Fire : MonoBehaviour
     {
         if (Physics.Raycast(MermiCikisNoktasi.transform.position, MermiCikisNoktasi.transform.forward, out hit, Menzil))
         {
-            MuzzleFlash.Play();
+            //MuzzleFlash.Play();
 
-            if (AtesSesi != null && SesKaynak != null)
-            {
-                SesKaynak.clip = AtesSesi;
-                SesKaynak.Play();
-            }
+            //if (AtesSesi != null && SesKaynak != null)
+            //{
+            //    SesKaynak.clip = AtesSesi;
+            //    SesKaynak.Play();
+            //}
 
             Debug.Log("Vurulan nesne: " + hit.transform.name);
 
             // 🔥 Vurulan objede Health script'i varsa hasar ver
-            Health health = hit.transform.GetComponent<Health>();
-            if (hit.transform.tag =="Bot")
+            CHealth health = hit.transform.GetComponent<CHealth>();
+            if (health != null)
             {
-                health.TakeDamage(25); // İstersen buradaki hasar miktarını değiştir
-                Debug.Log("Hasar verildi!");
+                health.hesaplananHealth(25f); // hasarı buradan ver
             }
+
+
         }
     }
 }

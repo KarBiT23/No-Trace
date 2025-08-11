@@ -1,20 +1,23 @@
 using UnityEngine;
+using TMPro;  // TextMeshPro için
 
 public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     public bool isDead { get; private set; }
-    public float despawnTime = 8f;
 
     private int currentHealth;
-    private Rigidbody rb;
     private Animator anim;
+
+    // Saðlýk texti (Inspector'dan baðla)
+    public TextMeshProUGUI healthText;
 
     void Start()
     {
         currentHealth = maxHealth;
-        rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        UpdateHealthUI();
     }
 
     public void TakeDamage(int amount)
@@ -22,6 +25,10 @@ public class Health : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        UpdateHealthUI();
+
         if (currentHealth <= 0)
         {
             Die();
@@ -38,19 +45,15 @@ public class Health : MonoBehaviour
             anim.SetTrigger("Die");
         }
 
-        // Rigidbody ile fizik etkileþimi açýlabilir (isteðe göre)
-        if (rb != null)
-        {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-        }
-
-        // Despawn süresi sonra objeyi yok et
-        Invoke(nameof(Despawn), despawnTime);
+        // Ýstersen objeyi yok etmek için ek kod ekleyebilirsin
+        Destroy(gameObject, 5f);
     }
 
-    void Despawn()
+    void UpdateHealthUI()
     {
-        Destroy(gameObject);
+        if (healthText != null)
+        {
+            healthText.text = $"Health: {currentHealth} / {maxHealth}";
+        }
     }
 }
