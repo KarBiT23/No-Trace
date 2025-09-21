@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bot
+  - Dead
   layers:
   - Default
   - TransparentFX
