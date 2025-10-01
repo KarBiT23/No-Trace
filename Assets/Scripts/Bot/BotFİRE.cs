@@ -42,15 +42,18 @@ public class Deneme : MonoBehaviour
 
     void Attack()
     {
-        // saldırı animasyonunu tetikle
         enemyAnimator.SetTrigger("Attack");
 
-        // hasarı animasyona senkronize etmek için Animation Event kullanman daha iyi olur
-        // şimdilik direkt uygulasın
-        CHealth playerHealth = target.GetComponent<CHealth>();
+        CHealth playerHealth = target.GetComponentInChildren<CHealth>();
         if (playerHealth != null)
         {
             playerHealth.hesaplananHealth(attackDamage);
+            Debug.Log("Bot vurdu, Player canı: " + playerHealth.Playerhealth);
+        }
+        else
+        {
+            Debug.LogError("Target üzerinde CHealth bulunamadı!");
         }
     }
+
 }

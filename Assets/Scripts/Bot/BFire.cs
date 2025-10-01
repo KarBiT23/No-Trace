@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BFire : MonoBehaviour
+public class Bfire : MonoBehaviour
 {
     RaycastHit hit;
     public GameObject MermiCikisNoktasi;
@@ -34,14 +34,6 @@ public class BFire : MonoBehaviour
     {
         if (Physics.Raycast(MermiCikisNoktasi.transform.position, MermiCikisNoktasi.transform.forward, out hit, Menzil))
         {
-            //MuzzleFlash.Play();
-
-            //if (AtesSesi != null && SesKaynak != null)
-            //{
-            //    SesKaynak.clip = AtesSesi;
-            //    SesKaynak.Play();
-            //}
-
             Debug.Log("Vurulan nesne: " + hit.transform.name);
 
             // 🔥 Vurulan objede Health script'i varsa hasar ver

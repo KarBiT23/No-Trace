@@ -5,16 +5,15 @@ public class CHealth : MonoBehaviour
 {
     public float Playerhealth = 100f;
     public float maxHealth = 100f;
-
     private Animator playeranimator;
 
     // TextMeshPro referansý
     public TextMeshProUGUI healthText;
+    
 
     void Start()
     {
         playeranimator = GetComponent<Animator>();
-
         // Baþlangýçta caný göster
         UpdateHealthUI();
     }
@@ -29,6 +28,7 @@ public class CHealth : MonoBehaviour
         if (Playerhealth <= 0)
         {
             PlayerDead();
+
         }
     }
 

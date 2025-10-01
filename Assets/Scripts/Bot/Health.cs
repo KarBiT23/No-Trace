@@ -8,8 +8,6 @@ public class Health : MonoBehaviour
 
     private int currentHealth;
     private Animator anim;
-
-    // Saðlýk texti (Inspector'dan baðla)
     public TextMeshProUGUI healthText;
 
     void Start()
@@ -44,8 +42,6 @@ public class Health : MonoBehaviour
         {
             anim.SetTrigger("Die");
         }
-
-        // Ýstersen objeyi yok etmek için ek kod ekleyebilirsin
         Destroy(gameObject, 5f);
     }
 
